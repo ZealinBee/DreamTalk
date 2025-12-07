@@ -1,0 +1,85 @@
+.thoughtsTab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.thoughtsButton {
+  background-color: #4f46e5;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: background-color 0.2s;
+}
+
+.thoughtsButton:hover {
+  background-color: #4338ca;
+}
+
+.thoughtsPanel {
+  position: absolute;
+  bottom: 60px;
+  right: 0;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  width: 320px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.panelTitle {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.emptyMessage {
+  color: #6b7280;
+  text-align: center;
+  padding: 20px;
+  margin: 0;
+}
+
+.recordingList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recordingItem {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.recordingItem:hover {
+  background-color: #f9fafb;
+}
+
+.recordingItem:last-child {
+  border-bottom: none;
+}
+
+.recordingName {
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recordingDate {
+  font-size: 12px;
+  color: #6b7280;
+}

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { X, Save, FileAudio } from 'lucide-react'
 import styles from './save-recording-modal.module.css'
 import type { Category } from '@/types/recording'
+import { getCategories } from '@/lib/categories/actions'
 
 interface SaveRecordingModalProps {
   isOpen: boolean
@@ -32,16 +33,16 @@ export function SaveRecordingModal({
       const now = new Date()
       const defaultName = `Recording ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`
 
+      // Fetch categories from Supabase
+      const fetchCategories = async () => {
+        const categoriesData = await getCategories()
+        setCategories(categoriesData)
+      }
+
       // Wrap setState in a timeout to avoid synchronous execution
       setTimeout(() => {
         setFilename(defaultName)
-
-        // TODO: Fetch categories from Supabase
-        // For now, using mock data
-        setCategories([
-          { id: '1', name: 'sleep', user_id: null, created_at: '', updated_at: '' },
-          { id: '2', name: 'shower', user_id: null, created_at: '', updated_at: '' },
-        ])
+        fetchCategories()
       }, 0)
     }
   }, [isOpen])
@@ -147,7 +148,7 @@ export function SaveRecordingModal({
             disabled={isSaving || !filename.trim()}
           >
             <Save className={styles.buttonIcon} />
-            {isSaving ? 'Saving...' : 'Save Recording'}
+            {isSaving ? 'Transcribing & Saving...' : 'Save Recording'}
           </button>
         </div>
       </div>

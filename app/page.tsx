@@ -1,7 +1,7 @@
 import { getUser } from '@/lib/auth/actions'
 import { GoogleSignInButton } from '@/components/auth/google-sign-in-button'
-import { UserProfile } from '@/components/auth/user-profile'
 import { RecordingButton } from '@/components/recording/recording-button'
+import Link from 'next/link'
 import styles from './home.module.css'
 
 export default async function Home() {
@@ -34,6 +34,12 @@ export default async function Home() {
           )}
         </div>
       </main>
+
+      {user && (
+        <Link href="/thoughts" className={styles.thoughtsButton}>
+          Thoughts
+        </Link>
+      )}
     </div>
   )
 }
