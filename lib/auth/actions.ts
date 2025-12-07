@@ -6,6 +6,9 @@ import { redirect } from 'next/navigation'
 export async function signInWithGoogle() {
   const supabase = await createClient()
 
+  console.log('Starting Google sign-in...')
+  console.log('Redirect URL:', `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`)
+
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
@@ -18,9 +21,13 @@ export async function signInWithGoogle() {
     return { error: error.message }
   }
 
+  console.log('OAuth URL generated:', data.url)
+
   if (data.url) {
     redirect(data.url)
   }
+
+  return { error: 'No redirect URL generated' }
 }
 
 export async function signOut() {

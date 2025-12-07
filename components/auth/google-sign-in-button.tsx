@@ -6,15 +6,22 @@ import styles from './google-sign-in-button.module.css'
 
 export function GoogleSignInButton() {
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSignIn = async () => {
     setIsLoading(true)
-    try {
-      await signInWithGoogle()
-    } catch (error) {
-      console.error('Error signing in:', error)
+    setError(null)
+
+    const result = await signInWithGoogle()
+
+    // If there's an error, display it
+    if (result?.error) {
+      console.error('Error signing in:', result.error)
+      setError(result.error)
       setIsLoading(false)
     }
+    // If successful, the redirect will happen on the server side
+    // The loading state will remain true as the page redirects
   }
 
   return (
@@ -42,6 +49,7 @@ export function GoogleSignInButton() {
         />
       </svg>
       {isLoading ? 'Signing in...' : 'Sign in with Google'}
+      {error && <div className={styles.error}>{error}</div>}
     </button>
   )
 }

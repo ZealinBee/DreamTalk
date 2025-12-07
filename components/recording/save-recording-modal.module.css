@@ -1,0 +1,295 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease-out;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.headerTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.headerTitle h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.headerIcon {
+  width: 24px;
+  height: 24px;
+  color: #667eea;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: #6b7280;
+  border-radius: 8px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.recordingInfo {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 12px;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.infoLabel {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.infoValue {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  font-family: 'Monaco', 'Courier New', monospace;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.input {
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.select {
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.footer {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+}
+
+.cancelButton,
+.saveButton {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.cancelButton {
+  background-color: white;
+  color: #374151;
+  border: 2px solid #e5e7eb;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.saveButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.saveButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.saveButton:disabled,
+.cancelButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.buttonIcon {
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .modal {
+    background-color: #1f2937;
+  }
+
+  .header {
+    border-bottom-color: #374151;
+  }
+
+  .headerTitle h2 {
+    color: #f9fafb;
+  }
+
+  .closeButton {
+    color: #9ca3af;
+  }
+
+  .closeButton:hover {
+    background-color: #374151;
+    color: #f9fafb;
+  }
+
+  .recordingInfo {
+    background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+  }
+
+  .infoLabel {
+    color: #9ca3af;
+  }
+
+  .infoValue {
+    color: #f9fafb;
+  }
+
+  .label {
+    color: #e5e7eb;
+  }
+
+  .input,
+  .select {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+  }
+
+  .input:focus,
+  .select:focus {
+    border-color: #667eea;
+    background-color: #374151;
+  }
+
+  .footer {
+    border-top-color: #374151;
+    background-color: #111827;
+  }
+
+  .cancelButton {
+    background-color: #374151;
+    color: #f9fafb;
+    border-color: #4b5563;
+  }
+
+  .cancelButton:hover:not(:disabled) {
+    background-color: #4b5563;
+    border-color: #6b7280;
+  }
+}

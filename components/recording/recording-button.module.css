@@ -1,0 +1,118 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.recordButton {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.recordButton:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.recordButton:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.recordButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.recordButton.recording {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.recordButton.processing {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+}
+
+.processing .icon {
+  animation: spin 1s linear infinite;
+}
+
+.recordingInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #f5576c;
+}
+
+.recordingDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #f5576c;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+.recordingTime {
+  font-family: 'Monaco', 'Courier New', monospace;
+  letter-spacing: 0.05em;
+}
+
+.hint {
+  font-size: 0.875rem;
+  color: #666;
+  margin: 0;
+  text-align: center;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 25px rgba(245, 87, 108, 0.8);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .hint {
+    color: #aaa;
+  }
+}

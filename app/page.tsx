@@ -1,6 +1,7 @@
 import { getUser } from '@/lib/auth/actions'
 import { GoogleSignInButton } from '@/components/auth/google-sign-in-button'
 import { UserProfile } from '@/components/auth/user-profile'
+import { RecordingButton } from '@/components/recording/recording-button'
 import styles from './home.module.css'
 
 export default async function Home() {
@@ -20,7 +21,9 @@ export default async function Home() {
 
         <div className={styles.content}>
           {user ? (
-            <UserProfile user={user} />
+            <>
+              <RecordingButton />
+            </>
           ) : (
             <div className={styles.card}>
               <h2 className={styles.cardTitle}>
