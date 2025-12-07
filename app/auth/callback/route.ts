@@ -6,9 +6,18 @@ export async function GET(request: Request) {
   const code = searchParams.get('code')
   const next = searchParams.get('next') ?? '/'
 
-  console.log('Auth callback hit!')
+  console.log('=== AUTH CALLBACK DEBUG ===')
+  console.log('Full URL:', request.url)
   console.log('Code:', code ? 'present' : 'missing')
   console.log('Origin:', origin)
+  console.log('Request headers:', {
+    host: request.headers.get('host'),
+    'x-forwarded-host': request.headers.get('x-forwarded-host'),
+    'x-forwarded-proto': request.headers.get('x-forwarded-proto'),
+  })
+  console.log('NODE_ENV:', process.env.NODE_ENV)
+  console.log('NEXT_PUBLIC_SITE_URL:', process.env.NEXT_PUBLIC_SITE_URL)
+  console.log('=========================')
 
   if (code) {
     const supabase = await createClient()

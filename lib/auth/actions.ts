@@ -6,13 +6,21 @@ import { redirect } from 'next/navigation'
 export async function signInWithGoogle() {
   const supabase = await createClient()
 
-  console.log('Starting Google sign-in...')
-  console.log('Redirect URL:', `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`)
+  const redirectUrl = process.env.NEXT_PUBLIC_SITE_URL
+
+  console.log('=== GOOGLE SIGN-IN DEBUG ===')
+  console.log('All NEXT_PUBLIC env vars:', {
+    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+  })
+  console.log('NODE_ENV:', process.env.NODE_ENV)
+  console.log('Redirect URL being used:', `${redirectUrl}/auth/callback`)
+  console.log('=========================')
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+      redirectTo: `${redirectUrl}/auth/callback`,
     },
   })
 
@@ -22,6 +30,7 @@ export async function signInWithGoogle() {
   }
 
   console.log('OAuth URL generated:', data.url)
+  console.log('Full OAuth data:', JSON.stringify(data, null, 2))
 
   if (data.url) {
     redirect(data.url)
