@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.avatar {
+  border-radius: 50%;
+}
+
+.info {
+  flex: 1;
+}
+
+.name {
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 4px 0;
+}
+
+.email {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.signOutButton {
+  padding: 8px 16px;
+  background-color: #ef4444;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.signOutButton:hover {
+  background-color: #dc2626;
+}
