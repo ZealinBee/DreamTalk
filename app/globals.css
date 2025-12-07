@@ -1,27 +1,43 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  /* Dream journal color palette */
+  --color-sage: #DAFEB7;
+  --color-warm-grey: #605B56;
+  --color-cream: #F2FBE0;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Derived colors for depth */
+  --color-sage-light: #E8FFCE;
+  --color-sage-muted: #C8EDA0;
+  --color-cream-darker: #E8F5CC;
+  --color-warm-grey-light: #8B8680;
+  --color-warm-grey-dark: #4A4540;
+
+  /* Semantic colors */
+  --background: linear-gradient(145deg, var(--color-cream) 0%, var(--color-sage-light) 100%);
+  --surface: rgba(242, 251, 224, 0.85);
+  --surface-elevated: rgba(255, 255, 255, 0.75);
+  --text-primary: var(--color-warm-grey);
+  --text-secondary: var(--color-warm-grey-light);
+  --text-muted: #9A958F;
+  --border-soft: rgba(96, 91, 86, 0.12);
+  --shadow-soft: 0 2px 12px rgba(96, 91, 86, 0.08);
+  --shadow-elevated: 0 4px 24px rgba(96, 91, 86, 0.12);
 }
 
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 body {
-  color: var(--foreground);
+  color: var(--text-primary);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  font-size: 16px;
 }
 
 * {
@@ -33,10 +49,37 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+  transition: opacity 0.3s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+a:hover {
+  opacity: 0.75;
+}
+
+/* Soft focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--color-sage-muted);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Gentle animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gentlePulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
   }
 }

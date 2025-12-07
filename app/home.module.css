@@ -3,69 +3,128 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
+  background: linear-gradient(145deg, #F2FBE0 0%, #DAFEB7 50%, #E8FFCE 100%);
+  padding: 2rem 1rem;
+  animation: fadeIn 0.6s ease-out;
 }
 
 .main {
-  max-width: 28rem;
+  max-width: 32rem;
   width: 100%;
-  margin: 0 16px;
+  margin: 0 auto;
 }
 
 .header {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 3rem;
+  animation: fadeIn 0.8s ease-out;
 }
 
 .title {
-  font-size: 2.25rem;
-  font-weight: 700;
-  color: #111827;
-  margin: 0 0 8px 0;
+  font-size: 2.75rem;
+  font-weight: 300;
+  color: var(--color-warm-grey);
+  margin: 0 0 0.75rem 0;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .subtitle {
-  color: #4b5563;
+  color: var(--color-warm-grey-light);
   margin: 0;
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.6;
 }
 
 .content {
   display: flex;
   flex-direction: column;
   align-items: center;
+  animation: fadeIn 1s ease-out;
 }
 
 .card {
-  background-color: #ffffff;
-  padding: 32px;
-  border-radius: 8px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow:
+    0 8px 32px rgba(96, 91, 86, 0.08),
+    0 2px 8px rgba(96, 91, 86, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 40px rgba(96, 91, 86, 0.12),
+    0 4px 12px rgba(96, 91, 86, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .cardTitle {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #111827;
-  margin: 0 0 16px 0;
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--color-warm-grey);
+  margin: 0 0 1.5rem 0;
   text-align: center;
+  letter-spacing: -0.01em;
 }
 
 .thoughtsButton {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #4f46e5;
-  color: white;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
+  bottom: 2rem;
+  right: 2rem;
+  background: linear-gradient(135deg, var(--color-sage) 0%, var(--color-sage-muted) 100%);
+  color: var(--color-warm-grey-dark);
+  padding: 1rem 1.75rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 500;
   text-decoration: none;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  transition: background-color 0.2s, transform 0.2s;
+  box-shadow:
+    0 4px 16px rgba(96, 91, 86, 0.15),
+    0 1px 4px rgba(96, 91, 86, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
 }
 
 .thoughtsButton:hover {
-  background-color: #4338ca;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow:
+    0 8px 24px rgba(96, 91, 86, 0.2),
+    0 2px 8px rgba(96, 91, 86, 0.12);
+  opacity: 1;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .title {
+    font-size: 2.25rem;
+  }
+
+  .card {
+    padding: 2rem;
+  }
+
+  .thoughtsButton {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9375rem;
+  }
 }
