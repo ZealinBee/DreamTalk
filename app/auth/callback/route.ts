@@ -70,13 +70,28 @@ export async function GET(request: Request) {
     const forwardedHost = request.headers.get('x-forwarded-host')
     const isLocalEnv = process.env.NODE_ENV === 'development'
 
+    console.log('=== REDIRECT DECISION ===')
+    console.log('isLocalEnv:', isLocalEnv)
+    console.log('forwardedHost:', forwardedHost)
+    console.log('origin:', origin)
+    
+    let redirectUrl
     if (isLocalEnv) {
-      return NextResponse.redirect(`${origin}${next}`)
+      redirectUrl = `${origin}${next}`
+      console.log('Using local redirect:', redirectUrl)
+      return NextResponse.redirect(redirectUrl)
     } else if (forwardedHost) {
-      return NextResponse.redirect(`https://${forwardedHost}${next}`)
+      redirectUrl = `https://${forwardedHost}${next}`
+      console.log('Using forwarded host redirect:', redirectUrl)
+      return NextResponse.redirect(redirectUrl)
     } else {
-      return NextResponse.redirect(`${origin}${next}`)
+      redirectUrl = `${origin}${next}`
+      console.log('Using origin redirect:', redirectUrl)
+      return NextResponse.redirect(redirectUrl)
     }
+    console.log('=========================')
+    
+    return NextResponse.redirect(redirectUrl)
   }
 
   console.error('No code in callback URL')
