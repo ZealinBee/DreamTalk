@@ -251,3 +251,28 @@
     font-size: 1.75rem;
   }
 }
+
+.logoutButton {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.875rem 1rem;
+  background: var(--color-warm-grey-dark);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(96, 91, 86, 0.15);
+}
+
+.logoutButton:hover {
+  background: var(--color-warm-grey);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(96, 91, 86, 0.2);
+}
+
+.logoutButton:active {
+  transform: translateY(0);
+}

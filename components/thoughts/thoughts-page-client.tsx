@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { Recording, Category } from '@/types/recording'
 import { RecordingDetail } from './recording-detail'
+import { signOut } from '@/lib/auth/actions'
 import styles from './thoughts-page.module.css'
 
 interface ThoughtsPageClientProps {
@@ -35,6 +36,10 @@ export function ThoughtsPageClient({ recordings, categories }: ThoughtsPageClien
 
   const handleClose = () => {
     setSelectedRecording(null)
+  }
+
+  const handleLogout = async () => {
+    await signOut()
   }
 
   return (
@@ -87,6 +92,12 @@ export function ThoughtsPageClient({ recordings, categories }: ThoughtsPageClien
               )
             })}
           </ul>
+          <button
+            className={styles.logoutButton}
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
         </aside>
 
         <main className={styles.main}>

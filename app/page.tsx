@@ -15,7 +15,7 @@ export default async function Home() {
             DreamTalk
           </h1>
           <p className={styles.subtitle}>
-            Welcome to DreamTalk
+            Record your Dream and go Back to Them Later
           </p>
         </div>
 
