@@ -1,0 +1,107 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #F2FBE0 0%, #DAFEB7 50%, #E8FFCE 100%);
+  padding: 2rem 1rem;
+}
+
+.main {
+  max-width: 32rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.titleSkeleton {
+  width: 200px;
+  height: 44px;
+  background: linear-gradient(90deg, rgba(96, 91, 86, 0.08) 0%, rgba(96, 91, 86, 0.12) 50%, rgba(96, 91, 86, 0.08) 100%);
+  background-size: 200% 100%;
+  border-radius: 8px;
+  margin: 0 auto 0.75rem auto;
+  animation: shimmer 1.5s infinite;
+}
+
+.subtitleSkeleton {
+  width: 320px;
+  height: 22px;
+  background: linear-gradient(90deg, rgba(96, 91, 86, 0.06) 0%, rgba(96, 91, 86, 0.1) 50%, rgba(96, 91, 86, 0.06) 100%);
+  background-size: 200% 100%;
+  border-radius: 6px;
+  margin: 0 auto;
+  animation: shimmer 1.5s infinite;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.recordingButtonSkeleton {
+  width: 140px;
+  height: 140px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0.5) 100%);
+  background-size: 200% 100%;
+  border-radius: 50%;
+  box-shadow:
+    0 8px 32px rgba(96, 91, 86, 0.08),
+    0 2px 8px rgba(96, 91, 86, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  animation: shimmer 1.5s infinite;
+}
+
+.thoughtsButtonSkeleton {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 120px;
+  height: 52px;
+  background: linear-gradient(90deg, rgba(218, 254, 183, 0.6) 0%, rgba(218, 254, 183, 0.8) 50%, rgba(218, 254, 183, 0.6) 100%);
+  background-size: 200% 100%;
+  border-radius: 50px;
+  box-shadow:
+    0 4px 16px rgba(96, 91, 86, 0.15),
+    0 1px 4px rgba(96, 91, 86, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .titleSkeleton {
+    width: 160px;
+    height: 36px;
+  }
+
+  .subtitleSkeleton {
+    width: 260px;
+  }
+
+  .recordingButtonSkeleton {
+    width: 120px;
+    height: 120px;
+  }
+
+  .thoughtsButtonSkeleton {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 100px;
+    height: 46px;
+  }
+}
