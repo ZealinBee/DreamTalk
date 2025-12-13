@@ -238,6 +238,9 @@
     0 4px 16px rgba(168, 221, 112, 0.3),
     0 1px 4px rgba(96, 91, 86, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .subscribeButton:hover {
