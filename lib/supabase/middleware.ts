@@ -2,16 +2,6 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function updateSession(request: NextRequest) {
-  console.log('=== MIDDLEWARE DEBUG ===')
-  console.log('Path:', request.nextUrl.pathname)
-  console.log('Full URL:', request.url)
-  console.log('Headers:', {
-    host: request.headers.get('host'),
-    'x-forwarded-host': request.headers.get('x-forwarded-host'),
-    'x-forwarded-proto': request.headers.get('x-forwarded-proto'),
-  })
-  console.log('========================')
-
   let supabaseResponse = NextResponse.next({
     request,
   })
