@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description:
     "Browse and revisit your recorded dreams. Search, filter, and explore your dream journal entries.",
   openGraph: {
-    title: "Your Dreams | DreamTalk",
+    title: "Your Dreams | WakeAndTalk",
     description:
       "Browse and revisit your recorded dreams. Search, filter, and explore your dream journal entries.",
   },

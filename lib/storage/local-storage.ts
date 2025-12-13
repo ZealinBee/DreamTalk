@@ -1,7 +1,7 @@
 import type { Recording, Category } from '@/types/recording'
 
-const RECORDINGS_KEY = 'dreamtalk_recordings'
-const CATEGORIES_KEY = 'dreamtalk_categories'
+const RECORDINGS_KEY = 'wakeandtalk_recordings'
+const CATEGORIES_KEY = 'wakeandtalk_categories'
 
 // Default categories
 const DEFAULT_CATEGORIES: Category[] = [

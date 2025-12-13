@@ -12,16 +12,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dreamtalk.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wakeandtalk.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "DreamTalk - Record and Remember Your Dreams",
-    template: "%s | DreamTalk",
+    default: "WakeAndTalk - Record and Remember Your Dreams",
+    template: "%s | WakeAndTalk",
   },
   description:
-    "Capture your dreams with voice recordings. DreamTalk transcribes and summarizes your dreams so you can revisit them anytime.",
+    "Capture your dreams with voice recordings. WakeAndTalk transcribes and summarizes your dreams so you can revisit them anytime.",
   keywords: [
     "dream journal",
     "dream recorder",
@@ -31,30 +31,30 @@ export const metadata: Metadata = {
     "lucid dreaming",
     "dream interpretation",
   ],
-  authors: [{ name: "DreamTalk" }],
-  creator: "DreamTalk",
+  authors: [{ name: "WakeAndTalk" }],
+  creator: "WakeAndTalk",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    siteName: "DreamTalk",
-    title: "DreamTalk - Record and Remember Your Dreams",
+    siteName: "WakeAndTalk",
+    title: "WakeAndTalk - Record and Remember Your Dreams",
     description:
-      "Capture your dreams with voice recordings. DreamTalk transcribes and summarizes your dreams so you can revisit them anytime.",
+      "Capture your dreams with voice recordings. WakeAndTalk transcribes and summarizes your dreams so you can revisit them anytime.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "DreamTalk - Dream Recording App",
+        alt: "WakeAndTalk - Dream Recording App",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "DreamTalk - Record and Remember Your Dreams",
+    title: "WakeAndTalk - Record and Remember Your Dreams",
     description:
-      "Capture your dreams with voice recordings. DreamTalk transcribes and summarizes your dreams so you can revisit them anytime.",
+      "Capture your dreams with voice recordings. WakeAndTalk transcribes and summarizes your dreams so you can revisit them anytime.",
     images: ["/og-image.png"],
   },
   robots: {

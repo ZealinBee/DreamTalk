@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Subscription Confirmed",
-  description: "Welcome to DreamTalk Premium! Your subscription is now active.",
+  description: "Welcome to WakeAndTalk Premium! Your subscription is now active.",
   robots: {
     index: false,
     follow: false,

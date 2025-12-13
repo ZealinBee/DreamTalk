@@ -8,7 +8,7 @@ export default function Home() {
       <main className={styles.main}>
         <div className={styles.header}>
           <h1 className={styles.title}>
-            DreamTalk
+            WakeAndTalk
           </h1>
           <p className={styles.subtitle}>
             Record your Dream and go Back to Them Later

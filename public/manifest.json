@@ -1,7 +1,7 @@
 {
-  "name": "DreamTalk",
-  "short_name": "DreamTalk",
-  "description": "Capture your dreams with voice recordings. DreamTalk transcribes and summarizes your dreams so you can revisit them anytime.",
+  "name": "WakeAndTalk",
+  "short_name": "WakeAndTalk",
+  "description": "Capture your dreams with voice recordings. WakeAndTalk transcribes and summarizes your dreams so you can revisit them anytime.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0a0a",

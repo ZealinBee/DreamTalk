@@ -1,8 +1,8 @@
-# DreamTalk Styling Guide
+# WakeAndTalk Styling Guide
 
 ## Overview
 
-DreamTalk features a cozy, journal-like aesthetic designed to create an immersive dream-recording experience. The design evokes the feeling of opening a personal journal with a warm, comforting atmosphere.
+WakeAndTalk features a cozy, journal-like aesthetic designed to create an immersive dream-recording experience. The design evokes the feeling of opening a personal journal with a warm, comforting atmosphere.
 
 ## Color Palette
 
