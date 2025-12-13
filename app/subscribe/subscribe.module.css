@@ -251,11 +251,106 @@
   transform: translateY(0);
 }
 
+.subscribeButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.subscribeButton:disabled:hover {
+  transform: none;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem;
+}
+
+.error {
+  color: #d32f2f;
+  background: rgba(211, 47, 47, 0.1);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9375rem;
+  text-align: center;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .guarantee {
   text-align: center;
   margin-top: 1.25rem;
   font-size: 0.875rem;
   color: var(--color-warm-grey-light);
+}
+
+/* Auth Section */
+.authSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem 0;
+  color: var(--color-warm-grey-light);
+}
+
+.authCard {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  padding: 2.5rem;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  box-shadow:
+    0 8px 32px rgba(96, 91, 86, 0.08),
+    0 2px 8px rgba(96, 91, 86, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.authIcon {
+  color: var(--color-warm-grey-light);
+  margin-bottom: 1rem;
+}
+
+.authTitle {
+  font-size: 1.375rem;
+  font-weight: 500;
+  color: var(--color-warm-grey);
+  margin: 0 0 0.5rem 0;
+}
+
+.authSubtitle {
+  color: var(--color-warm-grey-light);
+  margin: 0 0 1.5rem 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(139, 195, 74, 0.15);
+  border-radius: 50px;
+  margin-bottom: 2rem;
+  font-size: 0.9375rem;
+  color: var(--color-warm-grey);
+}
+
+.userCheckIcon {
+  color: #8BC34A;
 }
 
 @keyframes fadeIn {
@@ -278,6 +373,91 @@
   }
 }
 
+/* Auth Modal */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: fadeInOverlay 0.2s ease-out;
+}
+
+.modal {
+  position: relative;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  padding: 2.5rem;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  box-shadow:
+    0 24px 48px rgba(96, 91, 86, 0.2),
+    0 8px 16px rgba(96, 91, 86, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  animation: scaleInModal 0.25s ease-out;
+}
+
+.modalClose {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--color-warm-grey-light);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.modalClose:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--color-warm-grey);
+}
+
+.modalTitle {
+  font-size: 1.375rem;
+  font-weight: 500;
+  color: var(--color-warm-grey);
+  margin: 0 0 0.5rem 0;
+}
+
+.modalSubtitle {
+  color: var(--color-warm-grey-light);
+  margin: 0 0 1.5rem 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleInModal {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @media (max-width: 640px) {
   .plansContainer {
     grid-template-columns: 1fr;
@@ -293,5 +473,9 @@
 
   .price {
     font-size: 2.5rem;
+  }
+
+  .modal {
+    padding: 2rem 1.5rem;
   }
 }
