@@ -1,24 +1,27 @@
-'use server'
-
-import { createClient } from '@/lib/supabase/server'
 import type { Category } from '@/types/recording'
 
-/**
- * Fetches all categories available to the current user
- * Includes default categories (user_id IS NULL) and user's own categories
- */
-export async function getCategories(): Promise<Category[]> {
-  const supabase = await createClient()
-
-  const { data, error } = await supabase
-    .from('categories')
-    .select('*')
-    .order('name', { ascending: true })
-
-  if (error) {
-    console.error('Error fetching categories:', error)
-    return []
+// Default categories for local storage
+const DEFAULT_CATEGORIES: Category[] = [
+  {
+    id: 'default-sleep',
+    name: 'sleep',
+    user_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  },
+  {
+    id: 'default-shower',
+    name: 'shower',
+    user_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   }
+]
 
-  return data || []
+/**
+ * Returns default categories
+ * No longer requires authentication
+ */
+export function getCategories(): Category[] {
+  return DEFAULT_CATEGORIES
 }

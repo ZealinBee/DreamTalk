@@ -4,7 +4,9 @@ import { useState, useRef, useEffect } from 'react'
 import { Mic, Square } from 'lucide-react'
 import styles from './recording-button.module.css'
 import { SaveRecordingModal } from './save-recording-modal'
-import { saveRecording } from '@/lib/recordings/actions'
+import { processRecording } from '@/lib/recordings/actions'
+import { saveLocalRecording, blobToBase64, generateId } from '@/lib/storage/local-storage'
+import type { Recording } from '@/types/recording'
 
 type RecordingState = 'idle' | 'requesting-permission' | 'recording'
 
@@ -115,21 +117,30 @@ export function RecordingButton() {
     setIsSaving(true)
 
     try {
-      // Convert Blob to File
+      // Convert Blob to File for transcription
       const audioFile = new File([audioBlob], `${filename}.webm`, { type: 'audio/webm' })
 
-      // Call server action to upload and save
-      const result = await saveRecording({
-        audioFile,
-        filename,
-        categoryId
-      })
+      // Call server action to transcribe and summarize
+      const result = await processRecording({ audioFile })
 
-      if (!result.success) {
-        alert(result.error || 'Failed to save recording. Please try again.')
-        setIsSaving(false)
-        return
+      // Convert audio blob to base64 for localStorage storage
+      const audioBase64 = await blobToBase64(audioBlob)
+
+      // Create recording object
+      const recording: Recording = {
+        id: generateId(),
+        user_id: 'local', // No user, stored locally
+        category_id: categoryId,
+        filename: filename,
+        audio_url: audioBase64, // Store as base64 data URL
+        raw_text: result.rawText || '',
+        summarized_text: result.summarizedText || '',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
       }
+
+      // Save to localStorage
+      saveLocalRecording(recording)
 
       // Success! Reset everything
       setAudioBlob(null)

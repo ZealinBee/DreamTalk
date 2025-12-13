@@ -1,18 +1,9 @@
-import { getUserRecordings } from '@/lib/recordings/actions'
 import { getCategories } from '@/lib/categories/actions'
 import { ThoughtsPageClient } from '@/components/thoughts/thoughts-page-client'
-import { redirect } from 'next/navigation'
-import { getUser } from '@/lib/auth/actions'
 
-export default async function ThoughtsPage() {
-  const user = await getUser()
+export default function ThoughtsPage() {
+  const categories = getCategories()
 
-  if (!user) {
-    redirect('/')
-  }
-
-  const { recordings } = await getUserRecordings()
-  const categories = await getCategories()
-
-  return <ThoughtsPageClient recordings={recordings} categories={categories} />
+  // Pass empty recordings - client will load from localStorage
+  return <ThoughtsPageClient recordings={[]} categories={categories} />
 }
