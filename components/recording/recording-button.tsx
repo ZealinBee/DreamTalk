@@ -11,7 +11,11 @@ import type { Recording } from '@/types/recording'
 
 type RecordingState = 'idle' | 'requesting-permission' | 'recording'
 
-export function RecordingButton() {
+interface RecordingButtonProps {
+  hasSubscription?: boolean
+}
+
+export function RecordingButton({ hasSubscription = false }: RecordingButtonProps) {
   const [recordingState, setRecordingState] = useState<RecordingState>('idle')
   const [recordingTime, setRecordingTime] = useState(0)
   const [showModal, setShowModal] = useState(false)
@@ -60,13 +64,13 @@ export function RecordingButton() {
       mediaRecorder.start()
       setRecordingState('recording')
 
-      // Start timer with auto-cutoff at 2 minutes
+      // Start timer with auto-cutoff at 2 minutes (only for non-subscribers)
       const MAX_RECORDING_SECONDS = 120
       timerRef.current = setInterval(() => {
         setRecordingTime(prev => {
           const newTime = prev + 1
-          if (newTime >= MAX_RECORDING_SECONDS) {
-            // Auto-stop recording at 2 minutes
+          if (!hasSubscription && newTime >= MAX_RECORDING_SECONDS) {
+            // Auto-stop recording at 2 minutes for non-subscribers
             if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
               mediaRecorderRef.current.stop()
             }
@@ -187,7 +191,9 @@ export function RecordingButton() {
         {isRecording && (
           <div className={styles.recordingInfo}>
             <span className={styles.recordingDot} />
-            <span className={styles.recordingTime}>{formatTime(recordingTime)} / 2:00</span>
+            <span className={styles.recordingTime}>
+              {formatTime(recordingTime)}{!hasSubscription && ' / 2:00'}
+            </span>
           </div>
         )}
 
@@ -196,10 +202,12 @@ export function RecordingButton() {
         )}
 
         {!isRecording && !isRequestingPermission && (
-          <p className={styles.hint}>Tap to start recording (2 min max)</p>
+          <p className={styles.hint}>
+            {hasSubscription ? 'Tap to start recording' : 'Tap to start recording (2 min max)'}
+          </p>
         )}
 
-        {!isRecording && !isRequestingPermission && (
+        {!isRecording && !isRequestingPermission && !hasSubscription && (
           <p className={styles.upgradeHint}>
             Want unlimited recording time?{' '}
             <Link href="/subscribe" className={styles.upgradeLink}>

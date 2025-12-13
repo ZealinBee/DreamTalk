@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import { Recording, Category } from '@/types/recording'
+import { User } from '@/types/user'
 import { RecordingDetail } from './recording-detail'
 import { getLocalRecordings } from '@/lib/storage/local-storage'
 import { signOut } from '@/lib/auth/actions'
@@ -11,9 +12,10 @@ import styles from './thoughts-page.module.css'
 interface ThoughtsPageClientProps {
   recordings: Recording[]
   categories: Category[]
+  user: User | null
 }
 
-export function ThoughtsPageClient({ recordings: initialRecordings, categories }: ThoughtsPageClientProps) {
+export function ThoughtsPageClient({ recordings: initialRecordings, categories, user }: ThoughtsPageClientProps) {
   const [recordings, setRecordings] = useState<Recording[]>(initialRecordings)
   const [selectedRecording, setSelectedRecording] = useState<Recording | null>(null)
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null)
@@ -96,9 +98,11 @@ export function ThoughtsPageClient({ recordings: initialRecordings, categories }
               )
             })}
           </ul>
-          <button onClick={() => signOut()} className={styles.logoutButton}>
-            Sign Out
-          </button>
+          {user && (
+            <button onClick={() => signOut()} className={styles.logoutButton}>
+              Sign Out
+            </button>
+          )}
         </aside>
 
         <main className={styles.main}>

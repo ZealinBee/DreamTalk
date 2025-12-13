@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Check, Sparkles, Infinity, ArrowLeft, Loader2, X } from 'lucide-react'
-import { createCheckoutSession } from '@/lib/stripe/actions'
-import { getUser } from '@/lib/auth/actions'
+import { Check, Sparkles, Infinity, ArrowLeft, Loader2, X, AlertCircle } from 'lucide-react'
+import { createCheckoutSession, getUserSubscription } from '@/lib/stripe/actions'
+import { getUser, signOut } from '@/lib/auth/actions'
 import { GoogleSignInButton } from '@/components/auth/google-sign-in-button'
 import styles from './subscribe.module.css'
 
@@ -22,13 +22,20 @@ export default function SubscribePage() {
   const [isCheckingAuth, setIsCheckingAuth] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [user, setUser] = useState<UserData | null>(null)
+  const [hasSubscription, setHasSubscription] = useState(false)
   const [showAuthModal, setShowAuthModal] = useState(false)
+  const [authRedirectTo, setAuthRedirectTo] = useState('/subscribe')
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const userData = await getUser()
         setUser(userData)
+
+        if (userData) {
+          const { hasSubscription: hasSub } = await getUserSubscription()
+          setHasSubscription(hasSub)
+        }
       } catch (err) {
         console.error('Error checking auth:', err)
       } finally {
@@ -40,6 +47,7 @@ export default function SubscribePage() {
 
   const handleSubscribe = async () => {
     if (!user) {
+      setAuthRedirectTo('/subscribe')
       setShowAuthModal(true)
       return
     }
@@ -85,6 +93,41 @@ export default function SubscribePage() {
           <div className={styles.userInfo}>
             <Check size={16} className={styles.userCheckIcon} />
             <span>Signed in as {user.email}</span>
+          </div>
+        )}
+
+        {/* Message for signed-in users without subscription */}
+        {user && !hasSubscription && !isCheckingAuth && (
+          <div className={styles.noSubscriptionNotice}>
+            <AlertCircle size={16} className={styles.alertIcon} />
+            <div className={styles.noSubscriptionText}>
+              <span>Already purchased but don&apos;t see your subscription?</span>
+              <span className={styles.noSubscriptionHint}>
+                Try signing in with the email you used during purchase.{' '}
+                <button
+                  className={styles.switchAccountLink}
+                  onClick={() => signOut()}
+                >
+                  Switch account
+                </button>
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* Already subscribed prompt for non-signed-in users */}
+        {!user && !isCheckingAuth && (
+          <div className={styles.alreadySubscribed}>
+            Already subscribed?{' '}
+            <button
+              className={styles.signInLink}
+              onClick={() => {
+                setAuthRedirectTo('/')
+                setShowAuthModal(true)
+              }}
+            >
+              Restore Purchase
+            </button>
           </div>
         )}
 
@@ -205,7 +248,7 @@ export default function SubscribePage() {
             <p className={styles.modalSubtitle}>
               Create an account or sign in to complete your purchase
             </p>
-            <GoogleSignInButton redirectTo="/subscribe" />
+            <GoogleSignInButton redirectTo={authRedirectTo} />
           </div>
         </div>
       )}

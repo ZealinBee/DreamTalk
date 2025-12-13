@@ -1,8 +1,11 @@
 import { RecordingButton } from '@/components/recording/recording-button'
+import { getUserSubscription } from '@/lib/stripe/actions'
 import Link from 'next/link'
 import styles from './home.module.css'
 
-export default function Home() {
+export default async function Home() {
+  const { hasSubscription } = await getUserSubscription()
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -16,7 +19,7 @@ export default function Home() {
         </div>
 
         <div className={styles.content}>
-          <RecordingButton />
+          <RecordingButton hasSubscription={hasSubscription} />
         </div>
       </main>
 
