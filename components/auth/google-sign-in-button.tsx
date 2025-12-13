@@ -4,7 +4,11 @@ import { signInWithGoogle } from '@/lib/auth/actions'
 import { useState } from 'react'
 import styles from './google-sign-in-button.module.css'
 
-export function GoogleSignInButton() {
+interface GoogleSignInButtonProps {
+  redirectTo?: string
+}
+
+export function GoogleSignInButton({ redirectTo }: GoogleSignInButtonProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -12,7 +16,7 @@ export function GoogleSignInButton() {
     setIsLoading(true)
     setError(null)
 
-    const result = await signInWithGoogle()
+    const result = await signInWithGoogle(redirectTo)
 
     // If there's an error, display it
     if (result?.error) {

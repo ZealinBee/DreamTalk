@@ -114,7 +114,7 @@ export default function SubscribePage() {
               </li>
               <li className={styles.feature}>
                 <Check size={16} className={styles.checkIcon} />
-                <span>Priority support</span>
+                <span>Acess on Any Device</span>
               </li>
             </ul>
             <div className={styles.selectIndicator}>
@@ -151,7 +151,7 @@ export default function SubscribePage() {
               </li>
               <li className={styles.feature}>
                 <Check size={16} className={styles.checkIcon} />
-                <span>Priority support</span>
+                <span>Access on Any Device</span>
               </li>
             </ul>
             <div className={styles.selectIndicator}>
@@ -205,7 +205,7 @@ export default function SubscribePage() {
             <p className={styles.modalSubtitle}>
               Create an account or sign in to complete your purchase
             </p>
-            <GoogleSignInButton />
+            <GoogleSignInButton redirectTo="/subscribe" />
           </div>
         </div>
       )}

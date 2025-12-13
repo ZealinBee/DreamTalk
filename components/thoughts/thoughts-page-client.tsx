@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Recording, Category } from '@/types/recording'
 import { RecordingDetail } from './recording-detail'
 import { getLocalRecordings } from '@/lib/storage/local-storage'
+import { signOut } from '@/lib/auth/actions'
 import styles from './thoughts-page.module.css'
 
 interface ThoughtsPageClientProps {
@@ -95,6 +96,9 @@ export function ThoughtsPageClient({ recordings: initialRecordings, categories }
               )
             })}
           </ul>
+          <button onClick={() => signOut()} className={styles.logoutButton}>
+            Sign Out
+          </button>
         </aside>
 
         <main className={styles.main}>
