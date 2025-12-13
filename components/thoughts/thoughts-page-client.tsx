@@ -52,7 +52,7 @@ export function ThoughtsPageClient({ recordings: initialRecordings, categories }
           <Link href="/" className={styles.backButton}>
             ← Back to Home
           </Link>
-          <h1 className={styles.title}>Your Thoughts</h1>
+          <h1 className={styles.title}>Past Dreams</h1>
         </div>
       </div>
 

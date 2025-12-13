@@ -100,6 +100,27 @@
   line-height: 1.5;
 }
 
+.upgradeHint {
+  font-size: 0.8125rem;
+  color: var(--color-warm-grey-light);
+  margin: 0;
+  text-align: center;
+  opacity: 0.8;
+}
+
+.upgradeLink {
+  color: var(--color-warm-grey);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.upgradeLink:hover {
+  color: var(--color-warm-grey-dark);
+  opacity: 1;
+}
+
 @keyframes gentlePulse {
   0%, 100% {
     box-shadow:

@@ -21,7 +21,7 @@ export default function Home() {
       </main>
 
       <Link href="/thoughts" className={styles.thoughtsButton}>
-        Thoughts
+        Past Dreams
       </Link>
     </div>
   )

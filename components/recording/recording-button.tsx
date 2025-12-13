@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import Link from 'next/link'
 import { Mic, Square } from 'lucide-react'
 import styles from './recording-button.module.css'
 import { SaveRecordingModal } from './save-recording-modal'
@@ -186,7 +187,7 @@ export function RecordingButton() {
         {isRecording && (
           <div className={styles.recordingInfo}>
             <span className={styles.recordingDot} />
-            <span className={styles.recordingTime}>{formatTime(recordingTime)}</span>
+            <span className={styles.recordingTime}>{formatTime(recordingTime)} / 2:00</span>
           </div>
         )}
 
@@ -195,7 +196,16 @@ export function RecordingButton() {
         )}
 
         {!isRecording && !isRequestingPermission && (
-          <p className={styles.hint}>Tap to start recording</p>
+          <p className={styles.hint}>Tap to start recording (2 min max)</p>
+        )}
+
+        {!isRecording && !isRequestingPermission && (
+          <p className={styles.upgradeHint}>
+            Want unlimited recording time?{' '}
+            <Link href="/subscribe" className={styles.upgradeLink}>
+              Subscribe here
+            </Link>
+          </p>
         )}
       </div>
 
