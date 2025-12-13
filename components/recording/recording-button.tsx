@@ -57,9 +57,23 @@ export function RecordingButton() {
       mediaRecorder.start()
       setRecordingState('recording')
 
-      // Start timer
+      // Start timer with auto-cutoff at 2 minutes
+      const MAX_RECORDING_SECONDS = 120
       timerRef.current = setInterval(() => {
-        setRecordingTime(prev => prev + 1)
+        setRecordingTime(prev => {
+          const newTime = prev + 1
+          if (newTime >= MAX_RECORDING_SECONDS) {
+            // Auto-stop recording at 2 minutes
+            if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+              mediaRecorderRef.current.stop()
+            }
+            if (timerRef.current) {
+              clearInterval(timerRef.current)
+              timerRef.current = null
+            }
+          }
+          return newTime
+        })
       }, 1000)
 
     } catch (error) {
