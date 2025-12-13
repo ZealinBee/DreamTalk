@@ -7,23 +7,27 @@ import styles from './recording-button.module.css'
 import { SaveRecordingModal } from './save-recording-modal'
 import { processRecording } from '@/lib/recordings/actions'
 import { saveLocalRecording, blobToBase64, generateId } from '@/lib/storage/local-storage'
+import { getUserSubscription } from '@/lib/stripe/actions'
 import type { Recording } from '@/types/recording'
 
 type RecordingState = 'idle' | 'requesting-permission' | 'recording'
 
-interface RecordingButtonProps {
-  hasSubscription?: boolean
-}
-
-export function RecordingButton({ hasSubscription = false }: RecordingButtonProps) {
+export function RecordingButton() {
   const [recordingState, setRecordingState] = useState<RecordingState>('idle')
   const [recordingTime, setRecordingTime] = useState(0)
+  const [hasSubscription, setHasSubscription] = useState<boolean | null>(null)
   const [showModal, setShowModal] = useState(false)
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null)
   const [isSaving, setIsSaving] = useState(false)
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const audioChunksRef = useRef<Blob[]>([])
   const timerRef = useRef<NodeJS.Timeout | null>(null)
+
+  useEffect(() => {
+    getUserSubscription().then(({ hasSubscription: hasSub }) => {
+      setHasSubscription(hasSub)
+    })
+  }, [])
 
   useEffect(() => {
     return () => {
@@ -192,7 +196,7 @@ export function RecordingButton({ hasSubscription = false }: RecordingButtonProp
           <div className={styles.recordingInfo}>
             <span className={styles.recordingDot} />
             <span className={styles.recordingTime}>
-              {formatTime(recordingTime)}{!hasSubscription && ' / 2:00'}
+              {formatTime(recordingTime)}{hasSubscription === false && ' / 2:00'}
             </span>
           </div>
         )}
@@ -203,11 +207,15 @@ export function RecordingButton({ hasSubscription = false }: RecordingButtonProp
 
         {!isRecording && !isRequestingPermission && (
           <p className={styles.hint}>
-            {hasSubscription ? 'Tap to start recording' : 'Tap to start recording (2 min max)'}
+            {hasSubscription === null
+              ? 'Tap to start recording'
+              : hasSubscription
+                ? 'Tap to start recording'
+                : 'Tap to start recording (2 min max)'}
           </p>
         )}
 
-        {!isRecording && !isRequestingPermission && !hasSubscription && (
+        {!isRecording && !isRequestingPermission && hasSubscription === false && (
           <p className={styles.upgradeHint}>
             Want unlimited recording time?{' '}
             <Link href="/subscribe" className={styles.upgradeLink}>
