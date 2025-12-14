@@ -43,7 +43,7 @@ export async function POST(req: Request) {
 
         if (!userId || !plan) {
           console.error('Missing user_id or plan in session metadata')
-          break
+          throw new Error('Missing user_id or plan in session metadata')
         }
 
         const supabase = getSupabaseAdmin()
@@ -70,10 +70,10 @@ export async function POST(req: Request) {
 
         if (insertError) {
           console.error('Error inserting subscription:', insertError)
-        } else {
-          console.log('Subscription created for user:', userId)
+          throw new Error(`Failed to insert subscription: ${insertError.message}`)
         }
 
+        console.log('Subscription created for user:', userId)
         break
       }
 
@@ -105,6 +105,7 @@ export async function POST(req: Request) {
 
         if (error) {
           console.error('Error updating subscription:', error)
+          throw new Error(`Failed to update subscription: ${error.message}`)
         }
 
         break
@@ -128,6 +129,7 @@ export async function POST(req: Request) {
 
         if (error) {
           console.error('Error cancelling subscription:', error)
+          throw new Error(`Failed to cancel subscription: ${error.message}`)
         }
 
         break
@@ -151,6 +153,7 @@ export async function POST(req: Request) {
 
           if (error) {
             console.error('Error updating subscription status:', error)
+            throw new Error(`Failed to update subscription status: ${error.message}`)
           }
         }
 
