@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { Mic, Square } from 'lucide-react'
 import styles from './recording-button.module.css'
-import { SaveRecordingModal } from './save-recording-modal'
+import { SaveRecordingModal, type SavingStep } from './save-recording-modal'
 import { processRecording } from '@/lib/recordings/actions'
 import { saveLocalRecording, blobToBase64, generateId } from '@/lib/storage/local-storage'
 import { getUserSubscription } from '@/lib/stripe/actions'
@@ -19,6 +19,7 @@ export function RecordingButton() {
   const [showModal, setShowModal] = useState(false)
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null)
   const [isSaving, setIsSaving] = useState(false)
+  const [savingStep, setSavingStep] = useState<SavingStep>('idle')
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const audioChunksRef = useRef<Blob[]>([])
   const timerRef = useRef<NodeJS.Timeout | null>(null)
@@ -124,13 +125,27 @@ export function RecordingButton() {
     }
 
     setIsSaving(true)
+    setSavingStep('transcribing')
 
     try {
       // Convert Blob to File for transcription
       const audioFile = new File([audioBlob], `${filename}.webm`, { type: 'audio/webm' })
 
+      // Start processing and simulate step progression
+      // Since processRecording handles both transcription and summarization,
+      // we'll advance to "summarizing" after a reasonable delay
+      const stepProgressionTimer = setTimeout(() => {
+        setSavingStep('summarizing')
+      }, 3000) // Move to summarizing after 3 seconds
+
       // Call server action to transcribe and summarize
       const result = await processRecording({ audioFile })
+
+      // Clear the timer in case it hasn't fired yet
+      clearTimeout(stepProgressionTimer)
+
+      // After processRecording, both transcription and summarization are done
+      setSavingStep('saving')
 
       // Convert audio blob to base64 for localStorage storage
       const audioBase64 = await blobToBase64(audioBlob)
@@ -151,10 +166,15 @@ export function RecordingButton() {
       // Save to localStorage
       saveLocalRecording(recording)
 
+      // Show complete briefly
+      setSavingStep('complete')
+      await new Promise(resolve => setTimeout(resolve, 500))
+
       // Success! Reset everything
       setAudioBlob(null)
       setRecordingTime(0)
       setShowModal(false)
+      setSavingStep('idle')
 
       // Optional: Show success message
       alert('Recording saved successfully!')
@@ -164,6 +184,7 @@ export function RecordingButton() {
       alert('An unexpected error occurred. Please try again.')
     } finally {
       setIsSaving(false)
+      setSavingStep('idle')
     }
   }
 
@@ -232,6 +253,7 @@ export function RecordingButton() {
         onClose={handleCloseModal}
         onSave={handleSaveRecording}
         isSaving={isSaving}
+        savingStep={savingStep}
       />
     </>
   )

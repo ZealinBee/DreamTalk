@@ -255,3 +255,134 @@
     opacity: 1;
   }
 }
+
+/* Progress bar styles */
+.progressContainer {
+  padding: 1.75rem 2rem;
+  border-top: 1px solid rgba(96, 91, 86, 0.08);
+  background: linear-gradient(to top, rgba(242, 251, 224, 0.3), transparent);
+}
+
+.progressSteps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.progressStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  opacity: 0.4;
+  transition: all 0.3s ease;
+}
+
+.progressStepActive {
+  opacity: 1;
+}
+
+.progressStepComplete {
+  opacity: 1;
+}
+
+.progressStepIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(96, 91, 86, 0.08);
+  transition: all 0.3s ease;
+}
+
+.progressStepActive .progressStepIcon {
+  background: linear-gradient(135deg, var(--color-sage) 0%, var(--color-sage-muted) 100%);
+  box-shadow: 0 4px 12px rgba(96, 91, 86, 0.15);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.progressStepComplete .progressStepIcon {
+  background: var(--color-sage);
+}
+
+.stepIcon {
+  width: 18px;
+  height: 18px;
+  color: var(--color-warm-grey);
+}
+
+.progressStepActive .stepIcon {
+  color: var(--color-warm-grey-dark);
+}
+
+.progressStepComplete .stepIcon {
+  color: var(--color-warm-grey-dark);
+}
+
+.progressStepLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-warm-grey);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.progressBarContainer {
+  width: 100%;
+  height: 6px;
+  background: rgba(96, 91, 86, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.progressBar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-sage) 0%, var(--color-sage-muted) 100%);
+  border-radius: 3px;
+  position: relative;
+}
+
+.progressBar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.progressHint {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--color-warm-grey-light);
+  margin: 0;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
