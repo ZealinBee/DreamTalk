@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Save, FileAudio, Mic, Sparkles, Check } from 'lucide-react'
 import styles from './save-recording-modal.module.css'
@@ -51,6 +51,7 @@ export function SaveRecordingModal({
   const [filename, setFilename] = useState('')
   const [categoryId, setCategoryId] = useState<string | null>(null)
   const [categories, setCategories] = useState<Category[]>([])
+  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (isOpen) {
@@ -68,6 +69,10 @@ export function SaveRecordingModal({
       setTimeout(() => {
         setFilename(defaultName)
         fetchCategories()
+        // Select all text in the input after it's populated
+        setTimeout(() => {
+          inputRef.current?.select()
+        }, 50)
       }, 0)
     }
   }, [isOpen])
@@ -129,6 +134,7 @@ export function SaveRecordingModal({
               Filename
             </label>
             <input
+              ref={inputRef}
               id="filename"
               type="text"
               className={styles.input}
