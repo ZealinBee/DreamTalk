@@ -66,6 +66,64 @@
   animation: spin 2s linear infinite;
 }
 
+.recordingControls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.controlButton {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:
+    0 4px 16px rgba(96, 91, 86, 0.12),
+    0 2px 6px rgba(96, 91, 86, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.controlButton:hover {
+  transform: scale(1.08) translateY(-2px);
+}
+
+.controlButton:active {
+  transform: scale(0.96);
+}
+
+.pauseButton {
+  background: linear-gradient(135deg, #C8EDA0 0%, #A8DD70 100%);
+  color: var(--color-warm-grey-dark);
+}
+
+.pauseButton:hover {
+  box-shadow:
+    0 6px 20px rgba(168, 221, 112, 0.3),
+    0 3px 10px rgba(168, 221, 112, 0.15);
+}
+
+.stopButton {
+  background: linear-gradient(135deg, #F5D0C5 0%, #E8B4A6 100%);
+  color: var(--color-warm-grey-dark);
+}
+
+.stopButton:hover {
+  box-shadow:
+    0 6px 20px rgba(232, 180, 166, 0.3),
+    0 3px 10px rgba(232, 180, 166, 0.15);
+}
+
+.controlIcon {
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 1px 2px rgba(96, 91, 86, 0.15));
+}
+
 .recordingInfo {
   display: flex;
   align-items: center;
@@ -83,6 +141,19 @@
   background: linear-gradient(135deg, #A8DD70 0%, #8BC34A 100%);
   box-shadow: 0 0 8px rgba(168, 221, 112, 0.5);
   animation: gentleBlink 1.8s ease-in-out infinite;
+}
+
+.recordingDot.paused {
+  background: linear-gradient(135deg, #E8B4A6 0%, #D4A393 100%);
+  box-shadow: 0 0 8px rgba(232, 180, 166, 0.5);
+  animation: none;
+}
+
+.pausedLabel {
+  font-size: 0.8125rem;
+  color: var(--color-warm-grey-light);
+  font-weight: 500;
+  margin-left: 0.5rem;
 }
 
 .recordingTime {

@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import { Mic, Square } from 'lucide-react'
+import { Mic, Square, Pause, Play } from 'lucide-react'
 import styles from './recording-button.module.css'
 import { SaveRecordingModal, type SavingStep } from './save-recording-modal'
 import { processRecording } from '@/lib/recordings/actions'
@@ -10,7 +10,7 @@ import { saveLocalRecording, blobToBase64, generateId } from '@/lib/storage/loca
 import { getUserSubscription } from '@/lib/stripe/actions'
 import type { Recording } from '@/types/recording'
 
-type RecordingState = 'idle' | 'requesting-permission' | 'recording'
+type RecordingState = 'idle' | 'requesting-permission' | 'recording' | 'paused'
 
 export function RecordingButton() {
   const [recordingState, setRecordingState] = useState<RecordingState>('idle')
@@ -102,13 +102,50 @@ export function RecordingButton() {
   }
 
   const stopRecording = () => {
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+    if (mediaRecorderRef.current && (mediaRecorderRef.current.state === 'recording' || mediaRecorderRef.current.state === 'paused')) {
       mediaRecorderRef.current.stop()
 
       if (timerRef.current) {
         clearInterval(timerRef.current)
         timerRef.current = null
       }
+    }
+  }
+
+  const pauseRecording = () => {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+      mediaRecorderRef.current.pause()
+      setRecordingState('paused')
+
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+        timerRef.current = null
+      }
+    }
+  }
+
+  const resumeRecording = () => {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'paused') {
+      mediaRecorderRef.current.resume()
+      setRecordingState('recording')
+
+      // Restart timer
+      const MAX_RECORDING_SECONDS = 120
+      timerRef.current = setInterval(() => {
+        setRecordingTime(prev => {
+          const newTime = prev + 1
+          if (!hasSubscription && newTime >= MAX_RECORDING_SECONDS) {
+            if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+              mediaRecorderRef.current.stop()
+            }
+            if (timerRef.current) {
+              clearInterval(timerRef.current)
+              timerRef.current = null
+            }
+          }
+          return newTime
+        })
+      }, 1000)
     }
   }
 
@@ -195,30 +232,52 @@ export function RecordingButton() {
   }
 
   const isRecording = recordingState === 'recording'
+  const isPaused = recordingState === 'paused'
+  const isActiveRecording = isRecording || isPaused
   const isRequestingPermission = recordingState === 'requesting-permission'
 
   return (
     <>
       <div className={styles.container}>
-        <button
-          className={`${styles.recordButton} ${isRecording ? styles.recording : ''}`}
-          onClick={isRecording ? stopRecording : startRecording}
-          disabled={isRequestingPermission}
-          aria-label={isRecording ? 'Stop recording' : 'Start recording'}
-        >
-          {isRecording ? (
-            <Square className={styles.icon} />
-          ) : (
+        {!isActiveRecording ? (
+          <button
+            className={styles.recordButton}
+            onClick={startRecording}
+            disabled={isRequestingPermission}
+            aria-label="Start recording"
+          >
             <Mic className={styles.icon} />
-          )}
-        </button>
+          </button>
+        ) : (
+          <div className={styles.recordingControls}>
+            <button
+              className={`${styles.controlButton} ${styles.pauseButton}`}
+              onClick={isPaused ? resumeRecording : pauseRecording}
+              aria-label={isPaused ? 'Resume recording' : 'Pause recording'}
+            >
+              {isPaused ? (
+                <Play className={styles.controlIcon} />
+              ) : (
+                <Pause className={styles.controlIcon} />
+              )}
+            </button>
+            <button
+              className={`${styles.controlButton} ${styles.stopButton}`}
+              onClick={stopRecording}
+              aria-label="Stop recording"
+            >
+              <Square className={styles.controlIcon} />
+            </button>
+          </div>
+        )}
 
-        {isRecording && (
+        {isActiveRecording && (
           <div className={styles.recordingInfo}>
-            <span className={styles.recordingDot} />
+            <span className={`${styles.recordingDot} ${isPaused ? styles.paused : ''}`} />
             <span className={styles.recordingTime}>
               {formatTime(recordingTime)}{hasSubscription === false && ' / 2:00'}
             </span>
+            {isPaused && <span className={styles.pausedLabel}>Paused</span>}
           </div>
         )}
 
@@ -226,7 +285,7 @@ export function RecordingButton() {
           <p className={styles.hint}>Requesting microphone permission...</p>
         )}
 
-        {!isRecording && !isRequestingPermission && (
+        {!isActiveRecording && !isRequestingPermission && (
           <p className={styles.hint}>
             {hasSubscription === null
               ? 'Tap to start recording'
@@ -236,7 +295,7 @@ export function RecordingButton() {
           </p>
         )}
 
-        {!isRecording && !isRequestingPermission && hasSubscription === false && (
+        {!isActiveRecording && !isRequestingPermission && hasSubscription === false && (
           <p className={styles.upgradeHint}>
             Want unlimited recording time?{' '}
             <Link href="/subscribe" className={styles.upgradeLink}>
