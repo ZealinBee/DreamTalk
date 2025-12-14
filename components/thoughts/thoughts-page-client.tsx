@@ -7,13 +7,14 @@ import { User } from '@/types/user'
 import { RecordingDetail } from './recording-detail'
 import { getLocalRecordings } from '@/lib/storage/local-storage'
 import { signOut } from '@/lib/auth/actions'
-import { getUserSubscription } from '@/lib/stripe/actions'
+import { getUserSubscription, cancelSubscription, resumeSubscription } from '@/lib/stripe/actions'
 import styles from './thoughts-page.module.css'
 
 interface SubscriptionInfo {
   plan: 'monthly' | 'lifetime'
   status: string
   currentPeriodEnd: string | null
+  cancelAtPeriodEnd: boolean
 }
 
 interface ThoughtsPageClientProps {
@@ -27,6 +28,7 @@ export function ThoughtsPageClient({ recordings: initialRecordings, categories, 
   const [selectedRecording, setSelectedRecording] = useState<Recording | null>(null)
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null)
   const [subscription, setSubscription] = useState<SubscriptionInfo | null>(null)
+  const [isSubscriptionLoading, setIsSubscriptionLoading] = useState(false)
 
   // Load recordings from localStorage on mount
   useEffect(() => {
@@ -65,6 +67,43 @@ export function ThoughtsPageClient({ recordings: initialRecordings, categories, 
 
   const handleClose = () => {
     setSelectedRecording(null)
+  }
+
+  const handleCancelSubscription = async () => {
+    if (!confirm('Are you sure you want to cancel your subscription? You will retain access until the end of your billing period.')) {
+      return
+    }
+    setIsSubscriptionLoading(true)
+    try {
+      await cancelSubscription()
+      // Refresh subscription state
+      const result = await getUserSubscription()
+      if (result.hasSubscription && result.subscription) {
+        setSubscription(result.subscription as SubscriptionInfo)
+      }
+    } catch (error) {
+      console.error('Failed to cancel subscription:', error)
+      alert('Failed to cancel subscription. Please try again.')
+    } finally {
+      setIsSubscriptionLoading(false)
+    }
+  }
+
+  const handleResumeSubscription = async () => {
+    setIsSubscriptionLoading(true)
+    try {
+      await resumeSubscription()
+      // Refresh subscription state
+      const result = await getUserSubscription()
+      if (result.hasSubscription && result.subscription) {
+        setSubscription(result.subscription as SubscriptionInfo)
+      }
+    } catch (error) {
+      console.error('Failed to resume subscription:', error)
+      alert('Failed to resume subscription. Please try again.')
+    } finally {
+      setIsSubscriptionLoading(false)
+    }
   }
 
   return (
@@ -125,11 +164,32 @@ export function ThoughtsPageClient({ recordings: initialRecordings, categories, 
               <p className={styles.subscriptionDetail}>
                 {subscription.plan === 'lifetime'
                   ? 'You have lifetime access'
-                  : subscription.currentPeriodEnd
-                    ? `Renews ${new Date(subscription.currentPeriodEnd).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
-                    : 'Active subscription'
+                  : subscription.cancelAtPeriodEnd
+                    ? `Ends ${new Date(subscription.currentPeriodEnd!).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+                    : subscription.currentPeriodEnd
+                      ? `Renews ${new Date(subscription.currentPeriodEnd).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+                      : 'Active subscription'
                 }
               </p>
+              {subscription.plan === 'monthly' && (
+                subscription.cancelAtPeriodEnd ? (
+                  <button
+                    onClick={handleResumeSubscription}
+                    disabled={isSubscriptionLoading}
+                    className={styles.resubscribeButton}
+                  >
+                    {isSubscriptionLoading ? 'Processing...' : 'Resume Subscription'}
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleCancelSubscription}
+                    disabled={isSubscriptionLoading}
+                    className={styles.cancelSubscriptionButton}
+                  >
+                    {isSubscriptionLoading ? 'Processing...' : 'Cancel Auto-Renewal'}
+                  </button>
+                )
+              )}
             </div>
           )}
           {user && (

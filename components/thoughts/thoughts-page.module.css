@@ -277,6 +277,56 @@
   line-height: 1.4;
 }
 
+.cancelSubscriptionButton {
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  background: transparent;
+  color: var(--color-warm-grey-light);
+  border: 1px solid rgba(96, 91, 86, 0.2);
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cancelSubscriptionButton:hover:not(:disabled) {
+  background: rgba(96, 91, 86, 0.05);
+  border-color: rgba(96, 91, 86, 0.3);
+  color: var(--color-warm-grey);
+}
+
+.cancelSubscriptionButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.resubscribeButton {
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  background: linear-gradient(135deg, var(--color-sage) 0%, var(--color-sage-dark, #9BC76D) 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(96, 91, 86, 0.15);
+}
+
+.resubscribeButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(96, 91, 86, 0.2);
+}
+
+.resubscribeButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .logoutButton {
   width: 100%;
   margin-top: 1rem;

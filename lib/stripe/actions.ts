@@ -83,6 +83,104 @@ export async function getUserSubscription() {
       plan: subscription.plan,
       status: subscription.status,
       currentPeriodEnd: subscription.current_period_end,
+      cancelAtPeriodEnd: subscription.cancel_at_period_end ?? false,
+      stripeSubscriptionId: subscription.stripe_subscription_id,
     },
   }
+}
+
+export async function cancelSubscription() {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    throw new Error('User must be signed in to cancel subscription.')
+  }
+
+  // Get the user's active subscription
+  const { data: subscription } = await supabase
+    .from('subscriptions')
+    .select('stripe_subscription_id, plan')
+    .eq('user_id', user.id)
+    .eq('status', 'active')
+    .single()
+
+  if (!subscription) {
+    throw new Error('No active subscription found.')
+  }
+
+  if (subscription.plan === 'lifetime') {
+    throw new Error('Lifetime subscriptions cannot be cancelled.')
+  }
+
+  if (!subscription.stripe_subscription_id) {
+    throw new Error('No Stripe subscription ID found.')
+  }
+
+  // Cancel at period end (don't cancel immediately)
+  await stripe.subscriptions.update(subscription.stripe_subscription_id, {
+    cancel_at_period_end: true,
+  })
+
+  // Update our database to reflect the pending cancellation
+  const { error } = await supabase
+    .from('subscriptions')
+    .update({ cancel_at_period_end: true })
+    .eq('stripe_subscription_id', subscription.stripe_subscription_id)
+
+  if (error) {
+    console.error('Error updating subscription:', error)
+    throw new Error('Failed to update subscription status.')
+  }
+
+  return { success: true }
+}
+
+export async function resumeSubscription() {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    throw new Error('User must be signed in to resume subscription.')
+  }
+
+  // Get the user's subscription that's scheduled for cancellation
+  const { data: subscription } = await supabase
+    .from('subscriptions')
+    .select('stripe_subscription_id, plan, cancel_at_period_end')
+    .eq('user_id', user.id)
+    .eq('status', 'active')
+    .single()
+
+  if (!subscription) {
+    throw new Error('No active subscription found.')
+  }
+
+  if (!subscription.cancel_at_period_end) {
+    throw new Error('Subscription is not scheduled for cancellation.')
+  }
+
+  if (!subscription.stripe_subscription_id) {
+    throw new Error('No Stripe subscription ID found.')
+  }
+
+  // Resume the subscription (remove the cancel_at_period_end flag)
+  await stripe.subscriptions.update(subscription.stripe_subscription_id, {
+    cancel_at_period_end: false,
+  })
+
+  // Update our database
+  const { error } = await supabase
+    .from('subscriptions')
+    .update({ cancel_at_period_end: false })
+    .eq('stripe_subscription_id', subscription.stripe_subscription_id)
+
+  if (error) {
+    console.error('Error updating subscription:', error)
+    throw new Error('Failed to update subscription status.')
+  }
+
+  return { success: true }
 }

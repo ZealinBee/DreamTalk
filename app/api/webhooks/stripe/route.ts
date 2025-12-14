@@ -78,24 +78,27 @@ export async function POST(req: Request) {
       }
 
       case 'customer.subscription.updated': {
-        const subscription = event.data.object
+        const subscription = event.data.object as Stripe.Subscription
         console.log('=== Subscription Updated ===')
         console.log('Subscription ID:', subscription.id)
         console.log('Status:', subscription.status)
+        console.log('Cancel at period end:', subscription.cancel_at_period_end)
 
         const supabase = getSupabaseAdmin()
 
         // Update subscription status
         const updateData: Record<string, unknown> = {
           status: subscription.status === 'active' ? 'active' : 'past_due',
+          cancel_at_period_end: subscription.cancel_at_period_end,
         }
 
-        // Add period dates if available
-        if ('current_period_start' in subscription && typeof subscription.current_period_start === 'number') {
-          updateData.current_period_start = new Date(subscription.current_period_start * 1000).toISOString()
+        // Add period dates if available (access via type assertion for webhook payload)
+        const subData = subscription as unknown as { current_period_start?: number; current_period_end?: number }
+        if (subData.current_period_start) {
+          updateData.current_period_start = new Date(subData.current_period_start * 1000).toISOString()
         }
-        if ('current_period_end' in subscription && typeof subscription.current_period_end === 'number') {
-          updateData.current_period_end = new Date(subscription.current_period_end * 1000).toISOString()
+        if (subData.current_period_end) {
+          updateData.current_period_end = new Date(subData.current_period_end * 1000).toISOString()
         }
 
         const { error } = await supabase
