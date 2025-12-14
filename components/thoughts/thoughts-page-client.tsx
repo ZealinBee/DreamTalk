@@ -7,7 +7,14 @@ import { User } from '@/types/user'
 import { RecordingDetail } from './recording-detail'
 import { getLocalRecordings } from '@/lib/storage/local-storage'
 import { signOut } from '@/lib/auth/actions'
+import { getUserSubscription } from '@/lib/stripe/actions'
 import styles from './thoughts-page.module.css'
+
+interface SubscriptionInfo {
+  plan: 'monthly' | 'lifetime'
+  status: string
+  currentPeriodEnd: string | null
+}
 
 interface ThoughtsPageClientProps {
   recordings: Recording[]
@@ -19,11 +26,23 @@ export function ThoughtsPageClient({ recordings: initialRecordings, categories, 
   const [recordings, setRecordings] = useState<Recording[]>(initialRecordings)
   const [selectedRecording, setSelectedRecording] = useState<Recording | null>(null)
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null)
+  const [subscription, setSubscription] = useState<SubscriptionInfo | null>(null)
 
   // Load recordings from localStorage on mount
   useEffect(() => {
     const localRecordings = getLocalRecordings()
     setRecordings(localRecordings)
+  }, [])
+
+  // Fetch subscription status on mount
+  useEffect(() => {
+    async function fetchSubscription() {
+      const result = await getUserSubscription()
+      if (result.hasSubscription && result.subscription) {
+        setSubscription(result.subscription as SubscriptionInfo)
+      }
+    }
+    fetchSubscription()
   }, [])
 
   // Filter recordings by category
@@ -98,6 +117,21 @@ export function ThoughtsPageClient({ recordings: initialRecordings, categories, 
               )
             })}
           </ul>
+          {subscription && (
+            <div className={styles.subscriptionInfo}>
+              <div className={styles.subscriptionBadge}>
+                {subscription.plan === 'lifetime' ? 'Lifetime' : 'Monthly'} Subscriber
+              </div>
+              <p className={styles.subscriptionDetail}>
+                {subscription.plan === 'lifetime'
+                  ? 'You have lifetime access'
+                  : subscription.currentPeriodEnd
+                    ? `Renews ${new Date(subscription.currentPeriodEnd).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+                    : 'Active subscription'
+                }
+              </p>
+            </div>
+          )}
           {user && (
             <button onClick={() => signOut()} className={styles.logoutButton}>
               Sign Out

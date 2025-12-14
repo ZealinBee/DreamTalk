@@ -161,6 +161,7 @@
 .recordingCard {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: 20px;
   padding: 1.75rem;
   cursor: pointer;
@@ -171,6 +172,8 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.6);
   animation: fadeIn 0.5s ease-out;
+  overflow: hidden;
+  isolation: isolate;
 }
 
 .recordingCard:hover {
@@ -252,9 +255,31 @@
   }
 }
 
+.subscriptionInfo {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(218, 254, 183, 0.4) 0%, rgba(232, 255, 206, 0.4) 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(218, 254, 183, 0.6);
+}
+
+.subscriptionBadge {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-warm-grey-dark);
+  margin-bottom: 0.375rem;
+}
+
+.subscriptionDetail {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--color-warm-grey-light);
+  line-height: 1.4;
+}
+
 .logoutButton {
   width: 100%;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   padding: 0.875rem 1rem;
   background: var(--color-warm-grey-dark);
   color: white;
